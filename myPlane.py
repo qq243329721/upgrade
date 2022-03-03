@@ -1,7 +1,7 @@
-'''
+"""
 @title:我方飞机
 @author:喵
-'''
+"""
 
 import pygame
 import sys
@@ -11,9 +11,9 @@ import imgRect
 
 # 继承Sprite（碰撞检测）
 class MyPlane(pygame.sprite.Sprite):
-    '''
+    """
     我方飞机
-    '''
+    """
     # 初始化
     def __init__(self, gb_size):
         # 调用父类的初始化
@@ -35,7 +35,6 @@ class MyPlane(pygame.sprite.Sprite):
         # mash 碰撞检测区域
         self.image = self.flyImages[0]
         self.mash = pygame.mask.from_surface(self.image)
-        
 
     def moveUp(self):
         if self.rect.top <= 0:
@@ -44,7 +43,7 @@ class MyPlane(pygame.sprite.Sprite):
             self.rect.top -= self.speed
 
     def moveDown(self):
-        if self.rect.bottom >= self.height - 60:
+        if self.rect.bottom >= self.height - 60:  # 因为飞机不能到最底部, 需要有60的高度
             self.rect.bottom = self.height - 60
         else:
             self.rect.bottom += self.speed
@@ -81,8 +80,7 @@ if __name__ == "__main__":
         else:
             screen.blit(imgRect.getMyPlaneFlyImg()[1], (0, 0))
             myPlaneRunning = 1
-    
         pygame.display.flip()
-        clock.tick(60)
+        clock.tick(10)
 
 

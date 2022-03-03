@@ -1,12 +1,11 @@
-'''
+"""
 @title:抠图
 @author：喵
-'''
+"""
 
 import pygame
 from pygame.locals import *
 import sys
-
 
 pygame.init()
 # 获取大图片
@@ -14,10 +13,10 @@ bigImg = pygame.image.load(r"spritesheets/gameArts-hd.png")
 
 
 def getMyPlaneFlyImg():
-    '''
+    """
     获取我方飞机图片
     :return:
-    '''
+    """
     myPlaneFlyImg0 = bigImg.subsurface(868, 1484, 132, 164)
     myPlaneFlyImg1 = bigImg.subsurface(573, 1643, 160, 132)
     myPlaneFlyImg1 = pygame.transform.rotate(myPlaneFlyImg1, 90)
@@ -25,29 +24,29 @@ def getMyPlaneFlyImg():
 
 
 def getSmallEnemyFlyImg():
-    '''
+    """
     获取敌方小型飞机图片
     :return:
-    '''
-    #smallEnemyFlyImg0 = bigImg.subsurface(218, 1608, 68, 50)
+    """
+    # smallEnemyFlyImg0 = bigImg.subsurface(218, 1608, 68, 50)
     return [bigImg.subsurface(218, 1608, 68, 50).convert_alpha()]
 
 
 def getMidEnemyFlyImg():
-    '''
+    """
     获取敌方中型飞机图片
     :return:
-    '''
+    """
     midEnemyFlyImg0 = bigImg.subsurface(733, 1695, 116, 92)
     midEnemyFlyImg0 = pygame.transform.rotate(midEnemyFlyImg0, 90)
     return [midEnemyFlyImg0.convert_alpha()]
 
 
 def getBigEnemyFlyImg():
-    '''
+    """
     获取敌方中型飞机图片
     :return:
-    '''
+    """
     bigEnemyFlyImg0 = bigImg.subsurface(332, 1136, 219, 328)
     bigEnemyFlyImg1 = bigImg.subsurface(0, 1136, 332, 219)
     bigEnemyFlyImg1 = pygame.transform.rotate(bigEnemyFlyImg1, 90)
@@ -55,10 +54,10 @@ def getBigEnemyFlyImg():
 
 
 def getMyPlaneBlowupImg():
-    '''
+    """
     获取我方飞机爆炸图片
     :return:
-    '''
+    """
     myPlaneBlowupImg0 = bigImg.subsurface(317, 1464, 164, 132)
     myPlaneBlowupImg0 = pygame.transform.rotate(myPlaneBlowupImg0, 90)
     myPlaneBlowupImg1 = bigImg.subsurface(573, 1511, 164, 132)
@@ -66,42 +65,45 @@ def getMyPlaneBlowupImg():
     myPlaneBlowupImg2 = bigImg.subsurface(868, 1320, 132, 164)
     myPlaneBlowupImg3 = bigImg.subsurface(0, 1546, 102, 88)
     myPlaneBlowupImg3 = pygame.transform.rotate(myPlaneBlowupImg3, 45)
-    return [myPlaneBlowupImg0.convert_alpha(), myPlaneBlowupImg1.convert_alpha(), myPlaneBlowupImg2.convert_alpha(), myPlaneBlowupImg3.convert_alpha()]
+    return [myPlaneBlowupImg0.convert_alpha(), myPlaneBlowupImg1.convert_alpha(), myPlaneBlowupImg2.convert_alpha(),
+            myPlaneBlowupImg3.convert_alpha()]
 
 
 def getSmallEnemyBlowupImg():
-    '''
+    """
     获取敌方小型飞机爆炸图片
     :return:
-    '''
+    """
     smallEnemyBlowupImg0 = bigImg.subsurface(102, 1622, 68, 50)
     smallEnemyBlowupImg1 = bigImg.subsurface(218, 1546, 68, 62)
     smallEnemyBlowupImg2 = bigImg.subsurface(951, 1809, 68, 76)
     smallEnemyBlowupImg2 = pygame.transform.rotate(smallEnemyBlowupImg2, 90)
     smallEnemyBlowupImg3 = bigImg.subsurface(286, 1596, 64, 60)
     smallEnemyBlowupImg3 = pygame.transform.rotate(smallEnemyBlowupImg3, 315)
-    return[smallEnemyBlowupImg0.convert_alpha(), smallEnemyBlowupImg1.convert_alpha(), smallEnemyBlowupImg2.convert_alpha(), smallEnemyBlowupImg3.convert_alpha()]
+    return [smallEnemyBlowupImg0.convert_alpha(), smallEnemyBlowupImg1.convert_alpha(),
+            smallEnemyBlowupImg2.convert_alpha(), smallEnemyBlowupImg3.convert_alpha()]
 
 
 def getMidEnemyBlowupImg():
-    '''
+    """
     获取敌方中型飞机爆炸图片
     :return:
-    '''
+    """
     midEnemyBlowupImg0 = bigImg.subsurface(481, 1464, 92, 124)
     midEnemyBlowupImg1 = bigImg.subsurface(737, 1603, 120, 92)
     midEnemyBlowupImg1 = pygame.transform.rotate(midEnemyBlowupImg1, 90)
     midEnemyBlowupImg2 = bigImg.subsurface(737, 1511, 120, 92)
     midEnemyBlowupImg2 = pygame.transform.rotate(midEnemyBlowupImg2, 90)
     midEnemyBlowupImg3 = bigImg.subsurface(481, 1588, 92, 122)
-    return [midEnemyBlowupImg0.convert_alpha(), midEnemyBlowupImg1.convert_alpha(), midEnemyBlowupImg2.convert_alpha(), midEnemyBlowupImg3.convert_alpha()]
+    return [midEnemyBlowupImg0.convert_alpha(), midEnemyBlowupImg1.convert_alpha(), midEnemyBlowupImg2.convert_alpha(),
+            midEnemyBlowupImg3.convert_alpha()]
 
 
 def getBigEnemyBlowupImg():
-    '''
+    """
     获取敌方打飞机爆炸图片
     :return:
-    '''
+    """
     bigEnemyBlowupImg0 = bigImg.subsurface(640, 1101, 340, 219)
     bigEnemyBlowupImg0 = pygame.transform.rotate(bigEnemyBlowupImg0, 90)
     bigEnemyBlowupImg1 = bigImg.subsurface(640, 221, 341, 220)
@@ -118,25 +120,25 @@ def getBigEnemyBlowupImg():
     bigEnemyBlowupImg6 = pygame.transform.rotate(bigEnemyBlowupImg6, 90)
     bigEnemyBlowupImg7 = bigImg.subsurface(599, 1320, 269, 191)
     bigEnemyBlowupImg7 = pygame.transform.rotate(bigEnemyBlowupImg7, 90)
-    return [bigEnemyBlowupImg0.convert_alpha(), bigEnemyBlowupImg1.convert_alpha(),\
-            bigEnemyBlowupImg2.convert_alpha(), bigEnemyBlowupImg3.convert_alpha(),\
-            bigEnemyBlowupImg4.convert_alpha(), bigEnemyBlowupImg5.convert_alpha(),\
+    return [bigEnemyBlowupImg0.convert_alpha(), bigEnemyBlowupImg1.convert_alpha(), \
+            bigEnemyBlowupImg2.convert_alpha(), bigEnemyBlowupImg3.convert_alpha(), \
+            bigEnemyBlowupImg4.convert_alpha(), bigEnemyBlowupImg5.convert_alpha(), \
             bigEnemyBlowupImg6.convert_alpha(), bigEnemyBlowupImg7.convert_alpha()]
 
 
 def getBombImg():
-    '''
+    """
     获得炸弹补给图片
     :return:
-    '''
+    """
     return [bigImg.subsurface(857, 1648, 137, 79).convert_alpha()]
 
 
 def getBulletImg():
-    '''
+    """
     获得子弹补给图片
     :return:
-    '''
+    """
     return [bigImg.subsurface(102, 1546, 116, 76).convert_alpha()]
 
 

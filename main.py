@@ -1,13 +1,16 @@
-'''
+"""
 @tiele:打飞机
 @author:喵
-'''
+"""
+import sys
 
 import pygame
 from pygame.locals import *
 import traceback
 import myPlane
 import enemy
+
+
 # 初始化pygame
 pygame.init()
 # 初始化音乐模块
@@ -24,16 +27,27 @@ pygame.mixer.music.load(r'music/game_music.mp3')
 pygame.mixer.music.play()
 # 子弹
 # bullets = pygame.mixer.Sound(r'music/bullet.mp3')
+# 其余声效
+enemy1_down = pygame.mixer.Sound(r'music/enemy1_down.mp3')
+enemy2_down = pygame.mixer.Sound(r'music/enemy2_down.mp3')
+enemy2_out = pygame.mixer.Sound(r'music/enemy1_out.mp3')
+enemy3_down = pygame.mixer.Sound(r'music/enemy3_down.mp3')
+enemy4_down = pygame.mixer.Sound(r'music/enemy4_down.mp3')
+enemy4_out = pygame.mixer.Sound(r'music/enemy4_out.mp3')
+enemy5_down = pygame.mixer.Sound(r'music/enemy5_down.mp3')
+game_achievement = pygame.mixer.Sound(r'music/game_achievement.mp3')
+game_music = pygame.mixer.Sound(r'music/game_music.mp3')
+game_over = pygame.mixer.Sound(r'music/game_over.mp3')
 
 
 def add_small_enemies(groups, sort_group, num):
-    '''
+    """
     生成小型飞机，并加入到组中
     :param groups:大组（碰撞检测）
     :param sort_group:种类组（同类型飞机处理）
     :param num:初始飞机数量
     :return:
-    '''
+    """
     for i in range(num):
         small_enemy = enemy.SmallEnemy(bg_size)
         groups.add(small_enemy)
@@ -41,13 +55,13 @@ def add_small_enemies(groups, sort_group, num):
 
 
 def add_mid_enemies(groups, sort_group, num):
-    '''
+    """
     生成中型飞机，并加入到组中
     :param groups:大组（碰撞检测）
     :param sort_group:种类组（同类型飞机处理）
     :param num:初始飞机数量
     :return:
-    '''
+    """
     for i in range(num):
         mid_enemy = enemy.MidEnemy(bg_size)
         groups.add(mid_enemy)
@@ -55,13 +69,13 @@ def add_mid_enemies(groups, sort_group, num):
 
 
 def add_big_enemies(groups, sort_group, num):
-    '''
+    """
     生成小型飞机，并加入到组中
     :param groups:大组（碰撞检测）
     :param sort_group:种类组（同类型飞机处理）
     :param num:初始飞机数量
     :return:
-    '''
+    """
     for i in range(num):
         big_enemy = enemy.BigEnemy(bg_size)
         groups.add(big_enemy)
@@ -69,6 +83,7 @@ def add_big_enemies(groups, sort_group, num):
 
 
 def main():
+
     # 实例化我方飞机
     hero = myPlane.MyPlane(bg_size)
     # 存放敌方所有飞机
@@ -100,7 +115,9 @@ def main():
         # 获取事件
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                # running = False
+                pygame.quit()
+                sys.exit()
             # 监控空格键（全屏爆炸）
             if event.type == pygame.K_SPACE:
                 pass
@@ -118,8 +135,6 @@ def main():
         # 背景
         screen.blit(background, (0, 0), (0, 0, width, height))
 
-        
-
         # 生成敌方飞机(大 > 中 > 小)
         for each in big_enemies:
             if each.active:
@@ -134,7 +149,7 @@ def main():
                     # -50距离,播放出场音乐
                     pass
             else:
-                #毁灭
+                # 毁灭
                 if not (delay % 3):
                     if not big_enemy_blowup_img_index:
                         # 播放毁灭音乐
@@ -144,7 +159,7 @@ def main():
                     # 处理毁灭图片索引切换
                     if not big_enemy_blowup_img_index:
                         # 停止出场音乐
-                        
+
                         each.reset()
                         each.active = True
 
@@ -177,18 +192,19 @@ def main():
                     if not small_enemy_blowup_img_index:
                         each.reset()
                         each.active = True
-                
 
-        #碰撞检测
+        # 碰撞检测
         enemies_blowup = pygame.sprite.spritecollide(hero, enemies, False, pygame.sprite.collide_mask)
+
         if enemies_blowup:
-            #hero.active = False
-            for e in enemies_blowup:
-                e.active = False
-        
+            # 碰撞免疫, 简称无敌
+            # hero.active = False
+            for i in enemies_blowup:
+                i.active = False
+
         # 生成我方飞机
         if hero.active:
-            #我方飞机存活
+            # 我方飞机存活
             if switch_image:
                 screen.blit(hero.flyImages[0], hero.rect)
             else:
@@ -196,7 +212,7 @@ def main():
             # 切换图片
             if not (delay % 5):
                 switch_image = not switch_image
-            
+
         else:
             # 我方飞机毁灭
             if not (delay % 3):
@@ -221,11 +237,13 @@ def main():
 
 
 if __name__ == "__main__":
+    # 解决Too broad exception clause提示
+    # noinspection PyBroadException
     try:
         main()
     except SystemError:
         pass
-    except:
+    except Exception as e:
         traceback.print_exc()
         pygame.quit()
         input()

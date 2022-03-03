@@ -1,7 +1,7 @@
-'''
+"""
 @title:敌方飞机
 @author：喵
-'''
+"""
 
 import pygame
 import imgRect
@@ -10,10 +10,10 @@ from random import *
 
 # 继承Sprite（碰撞检测）
 class SmallEnemy(pygame.sprite.Sprite):
-    '''
+    """
     小型飞机
-    '''
-    #初始化
+    """
+    # 初始化
     def __init__(self, bg_size):
         pygame.sprite.Sprite.__init__(self)
 
@@ -40,10 +40,10 @@ class SmallEnemy(pygame.sprite.Sprite):
 
 # 继承Sprite（碰撞检测）
 class MidEnemy(pygame.sprite.Sprite):
-    '''
+    """
     中型飞机
-    '''
-    #初始化
+    """
+    # 初始化
     def __init__(self, bg_size):
         pygame.sprite.Sprite.__init__(self)
         
@@ -72,10 +72,10 @@ class MidEnemy(pygame.sprite.Sprite):
 
 # 继承Sprite（碰撞检测）
 class BigEnemy(pygame.sprite.Sprite):
-    '''
+    """
     大型飞机
-    '''
-    #初始化
+    """
+    # 初始化
     def __init__(self, bg_size):
         pygame.sprite.Sprite.__init__(self)
 
