@@ -148,8 +148,30 @@ def get_bullet1_img():
     获取1号子弹图片
     :return:
     """
-    add = '{{1009, 0}, {12, 28}}'
-    t = add.replace('{', '[').replace('}', ']')
+    position = '{{1009, 0}, {12, 28}}'
+    t = position.replace('{', '[').replace('}', ']')
+    rect = json.loads(t)
+    return [bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1]).convert_alpha()]
+
+
+def get_enemy2_hit_img():
+    """
+    大型飞机击中图片
+    :return:
+    """
+    position = '{{640, 1101}, {340, 219}}'
+    t = position.replace('{', '[').replace('}', ']')
+    rect = json.loads(t)
+    return [pygame.transform.rotate(bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1]), 90).convert_alpha()]
+
+
+def get_enemy3_hit_img():
+    """
+    中型飞机击中图片
+    :return:
+    """
+    position = '{{481, 1464}, {92, 124}}'
+    t = position.replace('{', '[').replace('}', ']')
     rect = json.loads(t)
     return [bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1]).convert_alpha()]
 
@@ -182,12 +204,12 @@ if __name__ == "__main__":
             screen.blit(getSmallEnemyBlowupImg()[3], (0, 0))
             myPlaneRunning = 1
         '''
-        rect = '{{1009, 0}, {12, 28}}'
+        r = '{{350, 1596}, {58, 56}}'
         # rect = '{{981, 0}, {28, 96}}'
-        rect = rect.replace('{', '[').replace('}', ']')
-        rect = json.loads(rect)
+        r = r.replace('{', '[').replace('}', ']')
+        r = json.loads(r)
 
-        img = bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1])
+        img = bigImg.subsurface(r[0][0], r[0][1], r[1][0], r[1][1])
 
         screen.blit(img, (0, 0))
         # screen.blit(getMyPlaneBlowupImg()[3], (200, 200))

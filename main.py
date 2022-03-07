@@ -66,6 +66,12 @@ def main():
     pygame.mixer.init()
     # 初始画布大小
     bg_size = width, height = 550, 800
+
+    BLACK = (0, 0, 0)
+    GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
+    WHITE = (255, 255, 255)
+
     screen = pygame.display.set_mode(bg_size)
     # 标题
     pygame.display.set_caption("Demo -- 飞机大战")
@@ -99,9 +105,6 @@ def main():
 
     # 实例化我方飞机
     hero = myPlane.MyPlane(bg_size)
-    # 记录飞机初始化位置
-    hero_init_rect = hero.rect
-    print(hero_init_rect)
     # 存放敌方所有飞机
     enemies = pygame.sprite.Group()
     # 存放敌方小型飞机
@@ -119,9 +122,9 @@ def main():
     # TODO 注意子弹数量, 太少容易打穿屏幕
     # 向上取整
     b = bullet.Bullet1([0, 0])
-    bullet_delay = 20
+    bullet_delay = 10
     BULLET_NUM = math.ceil((height - hero.rect.height - 60) / (bullet_delay * b.speed))
-    print(BULLET_NUM)
+    # print(BULLET_NUM)
     for i in range(BULLET_NUM):
         # midtop稍微偏了一点, 手动调整
         bullet1s.append(bullet.Bullet1([hero.rect.midtop[0] - 5, hero.rect.midtop[1]]))
@@ -132,6 +135,13 @@ def main():
     small_enemy_blowup_img_index = 0
     hero_blowup_img_index = 0
     bullet1s_img_index = 0
+
+    # 统计得分
+    score = 0
+    score_font = pygame.font.Font('font/Ruthie-Regular.ttf', 36)
+    # score_font = pygame.font.SysFont("calibri", 50)
+    # print(pygame.font.get_fonts())
+
     # 运行标识
     running = True
     # 初始化时钟（用于画面帧数）
@@ -183,7 +193,13 @@ def main():
                 if bullet1_hit:
                     each.active = False
                     for i in bullet1_hit:
-                        i.active = False
+                        if i in mid_enemies or i in big_enemies:
+                            i.hit = True
+                            i.hp -= 1
+                            if not i.hp:
+                                i.active = False
+                        else:
+                            i.active = False
 
             else:
                 if not (delay % bullet_delay):
@@ -196,13 +212,32 @@ def main():
                 # 存活
                 each.move()
                 # print(each.rect)
-                if switch_image:
-                    screen.blit(each.flyImages[0], each.rect)
+                if each.hit:
+                    each.hit = False
+                    screen.blit(each.hitImages[0], each.rect)
                 else:
-                    screen.blit(each.flyImages[1], each.rect)
+                    if switch_image:
+                        screen.blit(each.flyImages[0], each.rect)
+                    else:
+                        screen.blit(each.flyImages[1], each.rect)
                 if each.rect.bottom == -50:
                     # -50距离,播放出场音乐
                     enemy2_out.play(-5)
+
+                # 绘制血量
+                pygame.draw.line(screen, BLACK, (each.rect.left, each.rect.top + each.rect.height + 5),
+                                 (each.rect.right, each.rect.top + each.rect.height + 5), 2)
+                # 血量小于20%变成红色, 否则绿色
+                hp_ratio = each.hp / enemy.BigEnemy.hp
+                if hp_ratio > 0.2:
+                    pygame.draw.line(screen, GREEN, (each.rect.left, each.rect.top + each.rect.height + 5),
+                                     (each.rect.left + each.rect.width * hp_ratio, each.rect.top + each.rect.height + 5)
+                                     , 2)
+                else:
+                    pygame.draw.line(screen, RED, (each.rect.left, each.rect.top + each.rect.height + 5),
+                                     (each.rect.left + each.rect.width * hp_ratio, each.rect.top + each.rect.height + 5)
+                                     , 2)
+
             else:
                 # 毁灭
                 if not (delay % 3):
@@ -217,12 +252,30 @@ def main():
                         enemy2_out.stop()
                         each.reset()
                         each.active = True
+                        score += 20000
 
         for each in mid_enemies:
             if each.active:
                 # 存活
                 each.move()
-                screen.blit(each.flyImages[0], each.rect)
+                if each.hit:
+                    screen.blit(each.hitImages[0], each.rect)
+                    each.hit = False
+                else:
+                    screen.blit(each.flyImages[0], each.rect)
+                # 绘制血量
+                pygame.draw.line(screen, BLACK, (each.rect.left, each.rect.top + each.rect.height + 5),
+                                 (each.rect.right, each.rect.top + each.rect.height + 5), 2)
+                # 血量小于20%变成红色, 否则绿色
+                hp_ratio = each.hp / enemy.MidEnemy.hp
+                if hp_ratio > 0.2:
+                    pygame.draw.line(screen, GREEN, (each.rect.left, each.rect.top + each.rect.height + 5),
+                                     (each.rect.left + each.rect.width * hp_ratio, each.rect.top + each.rect.height + 5)
+                                     , 2)
+                else:
+                    pygame.draw.line(screen, RED, (each.rect.left, each.rect.top + each.rect.height + 5),
+                                     (each.rect.left + each.rect.width * hp_ratio, each.rect.top + each.rect.height + 5)
+                                     , 2)
             else:
                 # 毁灭
                 if not (delay % 3):
@@ -234,6 +287,7 @@ def main():
                     if not mid_enemy_blowup_img_index:
                         each.reset()
                         each.active = True
+                        score += 8000
 
         for each in small_enemies:
             # print(id(each))
@@ -252,6 +306,7 @@ def main():
                     if not small_enemy_blowup_img_index:
                         each.reset()
                         each.active = True
+                        score += 1000
 
         # 碰撞检测(敌机-英雄)
         enemies_blowup = pygame.sprite.spritecollide(hero, enemies, False, pygame.sprite.collide_mask)
@@ -276,7 +331,6 @@ def main():
         else:
             # 我方飞机毁灭
             if not (delay % 3):
-                print(hero.rect)
                 screen.blit(hero.blowupImages[hero_blowup_img_index], hero.rect)
                 hero_blowup_img_index = (hero_blowup_img_index + 1) % 4
                 # 处理毁灭图片索引切换
@@ -287,6 +341,10 @@ def main():
                 else:
                     hero = myPlane.MyPlane(bg_size)
                     hero.active = True
+
+        score_text = score_font.render('Score : %s' % str(score), True, WHITE)
+        screen.blit(score_text, (10, 5))
+
         # 手动延迟
         delay -= 1
         if not delay:
