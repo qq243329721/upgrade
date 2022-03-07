@@ -6,6 +6,7 @@
 import pygame
 from pygame.locals import *
 import sys
+import json
 
 pygame.init()
 # 获取大图片
@@ -142,6 +143,17 @@ def getBulletImg():
     return [bigImg.subsurface(102, 1546, 116, 76).convert_alpha()]
 
 
+def get_bullet1_img():
+    """
+    获取1号子弹图片
+    :return:
+    """
+    add = '{{1009, 0}, {12, 28}}'
+    t = add.replace('{', '[').replace('}', ']')
+    rect = json.loads(t)
+    return [bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1]).convert_alpha()]
+
+
 if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption("抠图测试")
@@ -170,11 +182,15 @@ if __name__ == "__main__":
             screen.blit(getSmallEnemyBlowupImg()[3], (0, 0))
             myPlaneRunning = 1
         '''
+        rect = '{{1009, 0}, {12, 28}}'
+        # rect = '{{981, 0}, {28, 96}}'
+        rect = rect.replace('{', '[').replace('}', ']')
+        rect = json.loads(rect)
 
-        screen.blit(getMyPlaneBlowupImg()[0], (0, 0))
-        screen.blit(getMyPlaneBlowupImg()[1], (200, 0))
-        screen.blit(getMyPlaneBlowupImg()[2], (0, 200))
-        screen.blit(getMyPlaneBlowupImg()[3], (200, 200))
+        img = bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1])
+
+        screen.blit(img, (0, 0))
+        # screen.blit(getMyPlaneBlowupImg()[3], (200, 200))
 
         pygame.display.flip()
         clock.tick(1)
