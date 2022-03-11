@@ -176,6 +176,48 @@ def get_enemy3_hit_img():
     return [bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1]).convert_alpha()]
 
 
+def get_bomb_img():
+    """
+    炸弹图片
+    :return:
+    """
+    return [pygame.image.load('images/bomb.png').convert_alpha()]
+
+
+def get_bomb_supply_img():
+    """
+    炸弹补给图片
+    :return:
+    """
+    return [pygame.image.load('images/bomb_supply.png').convert_alpha()]
+
+
+def get_bullet_supply_img():
+    """
+    子弹补给图片
+    :return:
+    """
+    return [pygame.image.load('images/bullet_supply.png').convert_alpha()]
+
+
+def get_bullet2_img():
+    """
+    超级子弹图片
+    :return:
+    """
+    position = '{{981, 0}, {28, 15}}'
+    t = position.replace('{', '[').replace('}', ']')
+    rect = json.loads(t)
+    return [pygame.transform.rotate(bigImg.subsurface(rect[0][0], rect[0][1], rect[1][0], rect[1][1]), 90).convert_alpha()]
+
+
+def get_hero_life_img():
+    """
+    英雄生命图片
+    :return:
+    """
+    return [pygame.image.load('images/life.png').convert_alpha()]
+
 if __name__ == "__main__":
     pygame.init()
     pygame.display.set_caption("抠图测试")
@@ -204,7 +246,7 @@ if __name__ == "__main__":
             screen.blit(getSmallEnemyBlowupImg()[3], (0, 0))
             myPlaneRunning = 1
         '''
-        r = '{{350, 1596}, {58, 56}}'
+        r = '{{981, 0}, {28, 15}}'
         # rect = '{{981, 0}, {28, 96}}'
         r = r.replace('{', '[').replace('}', ']')
         r = json.loads(r)
@@ -212,7 +254,10 @@ if __name__ == "__main__":
         img = bigImg.subsurface(r[0][0], r[0][1], r[1][0], r[1][1])
 
         screen.blit(img, (0, 0))
-        # screen.blit(getMyPlaneBlowupImg()[3], (200, 200))
+        screen.blit(pygame.transform.rotate(img, 90), (0, 400))
+
+        img = pygame.image.load('images/pause_nor.png').convert_alpha()
+        screen.blit(img, (200, 0))
 
         pygame.display.flip()
         clock.tick(1)

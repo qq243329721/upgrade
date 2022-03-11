@@ -24,6 +24,10 @@ class MyPlane(pygame.sprite.Sprite):
         self.blowupImages = imgRect.getMyPlaneBlowupImg()
         # 获取飞机矩形
         self.rect = self.flyImages[0].get_rect()
+        # 生命相关
+        self.life_num = 3
+        self.life_img = imgRect.get_hero_life_img()[0]
+        self.life_rect = self.life_img.get_rect()
         # 最大屏幕
         self.width, self.height = gb_size[0], gb_size[1]
         # 生成位置
@@ -32,6 +36,8 @@ class MyPlane(pygame.sprite.Sprite):
         self.speed = 10
         # 存活标志
         self.active = True
+        # 无敌
+        self.invincible = False
         # mash 碰撞检测区域
         self.image = self.flyImages[0]
         self.mash = pygame.mask.from_surface(self.image)
@@ -59,6 +65,11 @@ class MyPlane(pygame.sprite.Sprite):
             self.rect.right = self.width
         else:
             self.rect.right += self.speed
+
+    def reset(self):
+        self.rect.left, self.rect.top = (self.width - self.rect.width) // 2, self.height - self.rect.height - 60
+        self.active = True
+        self.invincible = True
 
 
 if __name__ == "__main__":

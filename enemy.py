@@ -24,6 +24,7 @@ class SmallEnemy(pygame.sprite.Sprite):
         self.rect.top, self.rect.left = randint(-5 * self.height, 0), randint(0, self.width - self.rect.width)
         self.speed = 3
         self.active = True
+        self.bomb_flag = False
         # mash 碰撞检测区域
         self.image = self.flyImages[0]
         self.mash = pygame.mask.from_surface(self.image)
@@ -58,8 +59,9 @@ class MidEnemy(pygame.sprite.Sprite):
         self.rect.top, self.rect.left = randint(-10 * self.height, -2 * self.height), randint(0, self.width - self.rect.width)
         # 速度
         self.speed = 2
-        # 存货标志
+        # 存活标志
         self.active = True
+        self.bomb_flag = False
         # mash 碰撞检测区域
         self.image = self.flyImages[0]
         self.mash = pygame.mask.from_surface(self.image)
@@ -76,7 +78,7 @@ class MidEnemy(pygame.sprite.Sprite):
 
     def reset(self):
         self.hp = MidEnemy.hp
-        self.rect.top, self.rect.left = randint(-10 * self.height, self.height), randint(0, self.width - self.rect.width)
+        self.rect.top, self.rect.left = randint(-10 * self.height, -2 * self.height), randint(0, self.width - self.rect.width)
 
 
 # 继承Sprite（碰撞检测）
@@ -95,9 +97,11 @@ class BigEnemy(pygame.sprite.Sprite):
         self.hitImages = imgRect.get_enemy2_hit_img()
         self.rect = self.flyImages[0].get_rect()
         self.width, self.height = bg_size[0], bg_size[1]
-        self.rect.top, self.rect.left = randint(-15 * self.rect.height, -5 * self.height), randint(0, self.width - self.rect.width)
+        self.rect.top, self.rect.left = randint(-20 * self.rect.height, -4 * self.height), \
+                                        randint(0, self.width - self.rect.width)
         self.speed = 1
         self.active = True
+        self.bomb_flag = False
         # mash 碰撞检测区域
         self.image = self.flyImages[0]
         self.mash = pygame.mask.from_surface(self.image)
