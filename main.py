@@ -212,7 +212,7 @@ def main():
     bullet_supply = supply.BulletSupply(bg_size)
     bomb_supply = supply.BombSupply(bg_size)
     SUPPLY_TIME = USEREVENT
-    pygame.time.set_timer(SUPPLY_TIME, 5 * 1000)
+    pygame.time.set_timer(SUPPLY_TIME, 30 * 1000)
     # 暂停倒计时
     SUPPLY_UNPAUSE_TIME = USEREVENT + 1
     pygame.time.set_timer(SUPPLY_UNPAUSE_TIME, 0)
@@ -234,7 +234,7 @@ def main():
     delay = 100
 
     # TODO 测试时停止背景音乐
-    pygame.mixer.music.stop()
+    # pygame.mixer.music.stop()
 
     while running:
         # 获取事件
@@ -299,8 +299,7 @@ def main():
             # 补给倒计时(自定义事件)
             elif event.type == SUPPLY_TIME:
                 enemy4_down.play()
-                # if random.choice([0, 1]):
-                if 0:
+                if random.choice([0, 1]):
                     bomb_supply.reset()
                 else:
                     bullet_supply.reset()
@@ -325,9 +324,9 @@ def main():
                 pygame.time.set_timer(INVINCIBLE_TIME, 0)
 
         # 背景
+        screen.blit(background, (0, 0), (0, 0, width, height))
 
         if hero.life_num and not paused_flag:
-            screen.blit(background, (0, 0), (0, 0, width, height))
             # 根据用户分数增加难度
             levels = [1, 2, 3, 4, 5]
             level_scores = [30000, 60000, 130000, 180000, 250000]
@@ -382,12 +381,9 @@ def main():
 
             # 绘制子弹(10帧一次)
             if not (delay % bullet_delay):
-            # bullets=[]
-            # if 0:
                 # 俩种子弹
                 if double_bullet_flag:
                     _bullet = bullets[0]
-                    print(bullets)
                     if isinstance(_bullet, bullet.Bullet1) and len(bullets) > BULLET2_NUM:
                         bullets.pop(0)
                     elif isinstance(_bullet, bullet.Bullet1):
@@ -398,9 +394,8 @@ def main():
                         bullets[-2].reset([hero.rect.centerx - 50, hero.rect.midtop[1] + 40])
                         bullets[-1].reset([hero.rect.centerx + 35, hero.rect.midtop[1] + 40])
                     elif isinstance(_bullet, bullet.Bullet2) and len(bullets) == BULLET2_NUM:
-                        bullets = bullet2s[:]
-                        bullets[bullet1s_img_index].reset([hero.rect.midtop[0] - 50, hero.rect.midtop[1] + 40])
-                        bullets[bullet1s_img_index + 1].reset([hero.rect.midtop[0] + 35, hero.rect.midtop[1] + 40])
+                        bullets[bullet2s_img_index].reset([hero.rect.midtop[0] - 50, hero.rect.midtop[1] + 40])
+                        bullets[bullet2s_img_index + 1].reset([hero.rect.midtop[0] + 35, hero.rect.midtop[1] + 40])
                         bullet2s_img_index = (bullet2s_img_index + 2) % BULLET2_NUM
                     bullet_out.play()
                 else:
@@ -410,17 +405,18 @@ def main():
                             bullets.pop(0)
                             bullets.pop(1)
                             bullets.append(bullet1s[bullet1s_img_index])
-                            bullets[bullet1s_img_index].reset([hero.rect.midtop[0] - 5, hero.rect.midtop[1]])
+                            bullets[-1].reset([hero.rect.midtop[0] - 5, hero.rect.midtop[1]])
                             bullet1s_img_index = (bullet1s_img_index + 1) % BULLET1_NUM
                         elif isinstance(_bullet, bullet.Bullet2) and len(bullets) <= BULLET1_NUM:
                             bullets.pop(0)
                             bullets.append(bullet1s[bullet1s_img_index])
-                            bullets[bullet1s_img_index].reset([hero.rect.midtop[0] - 5, hero.rect.midtop[1]])
+                            bullets[-1].reset([hero.rect.midtop[0] - 5, hero.rect.midtop[1]])
                             bullet1s_img_index = (bullet1s_img_index + 1) % BULLET1_NUM
                         elif isinstance(_bullet, bullet.Bullet1) and len(bullets) <= BULLET1_NUM:
                             # midtop稍微偏了一点, 手动调整
                             bullets[bullet1s_img_index].reset([hero.rect.midtop[0] - 5, hero.rect.midtop[1]])
                             bullet1s_img_index = (bullet1s_img_index + 1) % BULLET1_NUM
+                        print('--------')
                     else:
                         bullets = bullet1s[:]
                         # midtop稍微偏了一点, 手动调整
