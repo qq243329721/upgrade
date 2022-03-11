@@ -376,7 +376,7 @@ def main():
                 if pygame.sprite.collide_mask(bullet_supply, hero):
                     game_achievement.play()
                     double_bullet_flag = True
-                    pygame.time.set_timer(DOUBLE_BULLET_TIME, 6 * 1000)
+                    pygame.time.set_timer(DOUBLE_BULLET_TIME, 20 * 1000)
                     bullet_supply.active = False
 
             # 绘制子弹(10帧一次)
@@ -416,7 +416,6 @@ def main():
                             # midtop稍微偏了一点, 手动调整
                             bullets[bullet1s_img_index].reset([hero.rect.midtop[0] - 5, hero.rect.midtop[1]])
                             bullet1s_img_index = (bullet1s_img_index + 1) % BULLET1_NUM
-                        print('--------')
                     else:
                         bullets = bullet1s[:]
                         # midtop稍微偏了一点, 手动调整
@@ -674,6 +673,7 @@ def main():
                     record_score = 0
                 # 如果当前分数大于历史分则写入
                 if record_score < score:
+                    record_score = score
                     with open('record.txt', 'w') as f:
                         f.write(str(score))
             # 绘制结束画面
